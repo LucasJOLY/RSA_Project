@@ -1,11 +1,44 @@
 import random
-def is_premier(num):
-    if num <= 1:
+
+def cribleEratosthene(nombre):
+    estPremier = [True] * (nombre + 1)
+    estPremier[0] = estPremier[1] = False
+
+    # Marque les nombres composés
+    p = 2
+    while p ** 2 <= nombre :
+        if estPremier[p] :
+            for i in range(p ** 2, nombre + 1, p) :
+                estPremier[i] = False
+        p += 1
+
+    # Retourne la liste des nombres premiers
+    nombresPremiers = [i for i in range(2, nombre + 1) if estPremier[i]]
+    return nombresPremiers
+
+def estPremier(entier) :
+    if entier < 2:
         return False
-    for i in range(2, int(num**0.5) + 1):
-        if num % i == 0:
-            return False
-    return True
+    listePremiers = cribleEratosthene(entier)
+    return entier in listePremiers
+
+def nombreAleatoire(chiffres) :
+    nonZero = True
+    nombre = ""
+    for i in range (0, chiffres) :
+        if nonZero :
+            chiffre = random.randint(1,9)
+            nonZero = False
+        else :
+            chiffre = random.randint(0,9)
+        nombre += str(chiffre)
+    return int(nombre)
+
+def nombrePremier(chiffres) :
+    while True :
+        nombre = nombreAleatoire(chiffres)
+        if estPremier(nombre) :
+            return nombre
 
 # fonction qui calcule plus grand commun diviseur
 def pgcd(a, b):
