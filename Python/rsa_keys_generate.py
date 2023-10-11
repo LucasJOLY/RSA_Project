@@ -79,7 +79,7 @@ while True:
     try:
         p = int(input("Entrez un nombre premier p : "))
         q = int(input("Entrez un nombre premier q : "))
-        if is_premier(p) and is_premier(q):
+        if estPremier(p) and estPremier(q):
             break
         else:
             print("Les nombres que vous avez entrés ne sont pas premiers.")
