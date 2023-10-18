@@ -1,5 +1,6 @@
 import random
 
+#Genère une liste de nombre premiers de 2 à n
 def cribleEratosthene(nombre):
     estPremier = [True] * (nombre + 1)
     estPremier[0] = estPremier[1] = False
@@ -16,16 +17,20 @@ def cribleEratosthene(nombre):
     nombresPremiers = [i for i in range(2, nombre + 1) if estPremier[i]]
     return nombresPremiers
 
+#Vérifie si entier est un nombre premier
 def estPremier(entier) :
     if entier < 2:
         return False
     listePremiers = cribleEratosthene(entier)
     return entier in listePremiers
 
+#Génère un nombre aléatoire à n chiffres
 def nombreAleatoire(chiffres) :
+    if chiffres == 1 : #Pour un seul chiffre, on génère un nombre entre 0 et 9
+        return random.randint(0, 9)
     nonZero = True
     nombre = ""
-    for i in range (0, chiffres) :
+    for i in range (0, chiffres) : #Sinon, le premier chiffre ne peut pas être zéro
         if nonZero :
             chiffre = random.randint(1,9)
             nonZero = False
@@ -34,6 +39,7 @@ def nombreAleatoire(chiffres) :
         nombre += str(chiffre)
     return int(nombre)
 
+#Genère un nombre premier de n chiffres
 def nombrePremier(chiffres) :
     while True :
         nombre = nombreAleatoire(chiffres)
