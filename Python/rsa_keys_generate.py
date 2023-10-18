@@ -83,14 +83,14 @@ def calculer_e(d, phi):
 
 while True:
     try:
-        p = int(input("Entrez un nombre premier p : "))
-        q = int(input("Entrez un nombre premier q : "))
-        if estPremier(p) and estPremier(q):
-            break
-        else:
-            print("Les nombres que vous avez entrés ne sont pas premiers.")
+        p = int(input("Combien de chiffres pour p ? "))
+        q = int(input("Combien de chiffres pour q ? "))
+        if isinstance(p, int) and isinstance(q, int) :
+            p = nombrePremier(p)
+            q = nombrePremier(q)
+            break;
     except ValueError:
-        print("Veuillez entrer des nombres entiers valides.")
+        print("Veuillez entrer des nombres entiers valides. \n")
 
 n = p * q
 phi = (p - 1) * (q - 1)
@@ -107,3 +107,10 @@ print("e =", e)
 print("\nClé privée (n, d) :")
 print("n =", n)
 print("d =", d)
+
+M = 12345
+C = M**e % n
+print("Message encodé : ", C)
+
+M = C**d % n
+print("Message décodé : ", M)
