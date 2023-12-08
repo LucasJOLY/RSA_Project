@@ -46,71 +46,113 @@ def nombrePremier(chiffres) :
         if estPremier(nombre) :
             return nombre
 
-# fonction qui calcule plus grand commun diviseur
+
+
+
 def pgcd(a, b):
-    # algo euclide
-    #on rentre dans la boucle et on en sort qund b = 0
-    while b:
+    listeA = []
+    listeB = []
+    listeQ = []
+    listeR = []
+    listeA.append(a)
+    listeB.append(b)
 
-        a, b = b, a % b  # avec a % b on divise a par b et le reste est stocké dans a  et on échange a avec b de sorte que b devienne le plus petit des deux nombres.
-    return a
+    while b != 1:
+        q = a // b
 
-# fonction qui génère la valeur d
-def generer_d_aleatoire(n, phi):
-    while True:
-        # dans cette boucle on gérère un nombre
-        d = random.randint(2, phi-1)
-        if pgcd(d, phi) == 1:
-            return d
-# Fonction pour trouver d : l'inverse de e modulo phi
-def inverse_modulaire(d, phi):
-    # algorithme d'Euclide étendu
+        r = a % b
 
-    m0, x0, x1 = phi, 0, 1 # m0 est initialisé à phi et x0 à 0 et x1 à 1
-    while d > 1: # on itère jusqu'a ce que d soit inferieur ou égal à 1
-    #L'objectif de la boucle est de réduire d à 1 tout en calculant x1 pour obtenir l'inverse modulaire.
-        q = d // phi #  q = le quotient de la division de d par phi.
-        phi, d = d % phi, phi # phi est mis à jour avec le reste de la division de d par phi et d est mis a jour par la valeur précédente de phi
-        x0, x1 = x1 - q * x0, x0  #  formule x0, x1 = x1 - q * x0, x0. Cela permet de garder une trace des coefficients nécessaires pour calculer l'inverse modulaire
-    if x1 < 0:
-        x1 += m0 # si la valeur de x1 est négative, nous ajoutons m0 pour obtenir une valeur positive Car l'inverse modulaire doit être positif.
-    return x1
+        listeQ.append(q)
+        listeR.append(r)
+        a = b
+        b = r
+        listeA.append(a)
+        listeB.append(b)
+    return listeR[-1]
 
-def calculer_e(d, phi):
-    e = inverse_modulaire(d, phi)
-    return e
+
+
+def euclide8etendu(a, b):
+    if(a < b):
+        a, b = b, a
+    listeA = []
+    listeB = []
+    listeQ = []
+    listeR = []
+    listeA.append(a)
+    listeB.append(b)
+
+    while b != 1:
+        q = a // b
+
+        r = a % b
+
+        listeQ.append(q)
+        listeR.append(r)
+        a = b
+        b = r
+        listeA.append(a)
+        listeB.append(b)
+
+    newA = listeA[- 2]
+    newB = listeB[- 2]
+    u = 1
+    v = -listeQ[-1]
+
+    for i in range(len(listeA)-2):
+        oldU = u
+        oldV = v
+        newA = listeA[- 3 - i]
+        u = v
+        newB = newA
+        v = oldU - listeQ[- 2 - i] * oldV
+    return listeR[-1],u, v
+
+
+
+
+
+
+
+def generer_d_aleatoire(phi):
+     while True:
+         # dans cette boucle on gérère un nombre
+         d = random.randint(2, phi-1)
+         if euclide8etendu(d, phi)[0] == 1:
+             return d
 
 
 while True:
-    try:
-        p = int(input("Combien de chiffres pour p ? "))
-        q = int(input("Combien de chiffres pour q ? "))
-        if isinstance(p, int) and isinstance(q, int) :
-            p = nombrePremier(p)
-            q = nombrePremier(q)
-            break;
-    except ValueError:
-        print("Veuillez entrer des nombres entiers valides. \n")
+     try:
+         p = int(input("Combien de chiffres pour p ? "))
+         q = int(input("Combien de chiffres pour q ? "))
+         if isinstance(p, int) and isinstance(q, int) :
+             p = nombrePremier(p)
+             q = nombrePremier(q)
+             break;
+     except ValueError:
+         print("Veuillez entrer des nombres entiers valides. \n")
 
-n = p * q
-phi = (p - 1) * (q - 1)
 
-d = generer_d_aleatoire(n,phi)
-e = calculer_e(d, phi)
-
+#
+phi = (p-1)*(q-1)
+n = p*q
+d = generer_d_aleatoire(phi)
+e = euclide8etendu(d, phi)[1]
+if(e < 0):
+    e = e + phi
 
 # affiche les clés générées
 print("\nClé publique (n, e) :")
 print("n =", n)
 print("e =", e)
-
 print("\nClé privée (n, d) :")
 print("n =", n)
 print("d =", d)
 
-M = 12345
-C = M**e % n
-print("Message encodé : ", C)
-
-M = C**d % n
-print("Message décodé : ", M)
+# M = 12345
+# C = M**e % n
+# print("Message encodé : ", C)
+#
+# M = C**d % n
+# print("Message décodé : ", M)
