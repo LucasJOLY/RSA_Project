@@ -46,8 +46,6 @@ def pgcd(a, b) :
 
 
 def euclideEtendu(a, b) :
-    if(a < b) :
-        a, b = b, a
     listeA = []
     listeB = []
     listeQ = []
@@ -80,11 +78,6 @@ def euclideEtendu(a, b) :
         newB = newA
         v = oldU - listeQ[- 2 - i] * oldV
     return listeR[-1],u, v
-
-
-
-
-
 
 
 def dAleatoire(phi) :
