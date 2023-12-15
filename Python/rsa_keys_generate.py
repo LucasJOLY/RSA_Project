@@ -1,4 +1,5 @@
 import random
+import string
 
 #Vérifie si entier est un nombre premier
 def estPremier(entier) :
@@ -89,13 +90,29 @@ def dAleatoire(phi) :
 
 def encodeMessage(message, e, n):
     messageArray = []
+    encodedMessage = ""
     for i in range (0, len(message)):
         messageArray.append(ord(message[i]))
     for i in range (0, len(messageArray)):
-        messageArray[i] = messageArray[i]**e % n
+        encodedMessage += str(messageArray[i]**e % n)
+        encodedMessage += random.choice(string.ascii_letters)
+    return encodedMessage
+
+def messageToArray(message):
+    messageArray = []
+    currentString = ""
+    currentInt = 0
+    for i in range (0, len(message)):
+        try :
+            currentString += message[i]
+            currentInt = int(currentString)
+        except ValueError :
+            messageArray.append(currentInt)
+            currentString = ""
     return messageArray
 
-def decodeMessage(messageArray, d, n):
+def decodeMessage(message, d, n):
+    messageArray = messageToArray(message)
     message = ""
     for i in range (0, len(messageArray)):
         message += chr(messageArray[i]**d % n)
