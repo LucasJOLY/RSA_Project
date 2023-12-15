@@ -87,27 +87,40 @@ def dAleatoire(phi) :
          if pgcd(d, phi) == 1 :
              return d
 
+def encodeMessage(message, e, n):
+    messageArray = []
+    for i in range (0, len(message)):
+        messageArray.append(ord(message[i]))
+    for i in range (0, len(messageArray)):
+        messageArray[i] = messageArray[i]**e % n
+    return messageArray
 
+def decodeMessage(messageArray, d, n):
+    message = ""
+    for i in range (0, len(messageArray)):
+        message += chr(messageArray[i]**d % n)
+    return message
+# =============================================================================
 while True :
-    try :
-        p = int(input("Combien de chiffres pour p ? ")) 
-        q = int(input("Combien de chiffres pour q ? "))
-        if isinstance(p, int) and isinstance(q, int) :
-            p = nombrePremier(p)
-            q = nombrePremier(q)
-            break;
-    except ValueError : 
-        print("Veuillez entrer des nombres entiers valides. \n")
-
+     try :
+         p = int(input("Combien de chiffres pour p ? ")) 
+         q = int(input("Combien de chiffres pour q ? "))
+         if isinstance(p, int) and isinstance(q, int) :
+             p = nombrePremier(p)
+             q = nombrePremier(q)
+             break;
+     except ValueError : 
+         print("Veuillez entrer des nombres entiers valides. \n")
+ 
 print("p ", p)
 print("q ", q)
 phi = (p-1)*(q-1)
 n = p*q
 d = dAleatoire(phi)
 e = euclideEtendu(d, phi)[1]
-while(e < 0) :
+while(e < 0) : 
     e = e + phi
-
+ 
 # affiche les clés générées
 print("\nClé publique (n, e) :")
 print("n =", n)
@@ -116,9 +129,10 @@ print("\nClé privée (n, d) :")
 print("n =", n)
 print("d =", d)
 
-M = 12345
-C = M**e % n
-print("Message encodé : ", C)
+message = str(input("Entrez un message à encoder : ")) 
 
-M = C**d % n
-print("Message décodé : ", M)
+messageEncode = encodeMessage(message, e, n)
+print("Votre message encodé : ", messageEncode)
+
+messageDecode = decodeMessage(messageEncode, d, n)
+print("Votre message décodé : " + messageDecode)
